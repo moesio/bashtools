@@ -1,0 +1,23 @@
+#!/bin/bash
+
+[ $# -eq 0 ] && echo "Usage: $0 [-m] file1 [file2 ...]"
+
+MOVE="false"
+VERBOSE="false"
+LABEL=`date +%Y%m%d%H%M`
+
+for arg in $*; do
+        [ "$arg" == "-m" ] && MOVE="true"
+        [ "$arg" == "-v" ] && VERBOSE="true"
+done
+
+for file in $*; do
+        if [ "$file" != "-m" -a "$file" != "-v" ]; then
+                [ $VERBOSE == "true"  ] && echo $file
+                if [ "$MOVE" == "true" ]; then
+                        mv $file{,.$LABEL.backup}
+                else   
+                        cp $file{,.$LABEL.backup}
+                fi
+        fi
+done
